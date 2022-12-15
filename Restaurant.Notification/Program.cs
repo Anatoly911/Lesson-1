@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using MassTransit;
+using Restaurant.Notification.Consumers;
 
 namespace Restaurant.Notification
 {
@@ -14,7 +16,17 @@ namespace Restaurant.Notification
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) =>
             {
-                services.AddHostedService<Worker>();
+                services.AddMassTransit(x =>
+                {
+                    x.AddConsumer<NotifierTableBookedConsumer>();
+                    x.AddConsumer<KitchenReadyConsumer>();
+                    x.UsingRabbitMq((context, cfg) =>
+                    {
+                        cfg.ConfigureEndpoints(context);
+                    });
+                });
+                services.AddSingleton<Notifier>();
+                services.AddMassTransitHostedService(true);
             });
     }
 }
