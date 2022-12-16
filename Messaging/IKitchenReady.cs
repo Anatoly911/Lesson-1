@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace Restaurant.Messages
 {
-    public class KitchenReady : IKitchenReady
+    public interface IKitchenReady
     {
-        public KitchenReady(Guid orderId, bool ready)
-        {
-            OrderId = orderId;
-            Ready = ready;
-        }
         public Guid OrderId { get; }
         public bool Ready { get; }
     }
