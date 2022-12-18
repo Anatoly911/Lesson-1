@@ -19,30 +19,30 @@ namespace Lesson_1
         public async Task<bool?> BookFreeTableAsync(int countOfPersons)
         {
             Console.WriteLine("Добрый день! Подождите секунду, я подберу столик и подтвержу вашу бронь. Вам придет уведомление");
-            var table = _tables.FirstOrDefault(t => t.SeatsCount > countOfPersons && t.State == State.Free);
-            await Task.Delay(1000 * 5);
-            return table?.SetState(State.Booked);
+            var table = _tables.FirstOrDefault(t => t.SeatsCount > countOfPersons && t.State == TableState.Free);
+            //await Task.Delay(1000 * 5);
+            return table?.SetState(TableState.Booked);
         }
         public void BookFreeTable(int countOfPersons)
         {
             Console.WriteLine("Добрый день! Подождите секунду, я подберу столик и подтвержу вашу бронь. Оставайтесь на линии");
-            var table = _tables.FirstOrDefault(t => t.SeatsCount > countOfPersons && t.State == State.Free);
+            var table = _tables.FirstOrDefault(t => t.SeatsCount > countOfPersons && t.State == TableState.Free);
             Thread.Sleep(1000 * 5);
-            table?.SetState(State.Booked);
+            table?.SetState(TableState.Booked);
         }
         public async Task<bool?> CancelBookTableAsync(int countOfPersons, int id)
         {
             Console.WriteLine("Добрый день! Подождите секунду, я сниму Вашу бронь. Вам придет уведомление");
-            var table = _tables.FirstOrDefault(t => t.Id == id && t.State == State.Booked);
+            var table = _tables.FirstOrDefault(t => t.Id == id && t.State == TableState.Booked);
             await Task.Delay(1000 * 5);
-            return table?.SetState(State.Free);
+            return table?.SetState(TableState.Free);
         }
         public void CancelBookTable(int countOfPersons, int id)
         {
             Console.WriteLine("Добрый день! Подождите секунду, я отменю вашу бронь. Оставайтесь на линии");
-            var table = _tables.FirstOrDefault(t => t.Id == id && t.State == State.Booked);
+            var table = _tables.FirstOrDefault(t => t.Id == id && t.State == TableState.Booked);
             Thread.Sleep(1000 * 5);
-            table?.SetState(State.Free);
+            table?.SetState(TableState.Free);
         }
     }
 }

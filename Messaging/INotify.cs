@@ -11,7 +11,7 @@ namespace Restaurant.Messages
         public string Message { get; set; }
         public Guid OrderId { get; }
         public Guid ClientId { get; }
-       
+
     }
     public class Notify : INotify
     {

@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Restaurant.Kitchen.Consumers;
 using Restaurant.Messages;
 using Restaurant.Notification;
 using System;
@@ -20,6 +21,14 @@ namespace Restaurant.Notification.Consumers
         {
             _notifier.Notify(context.Message.OrderId, context.Message.ClientId, context.Message.Message);
             return Task.CompletedTask;
+        }
+        public async Task Consume(ConsumeContext<IBookingRequest> context)
+        {
+            var rnd = new Random().Next(1000, 10000);
+            if (rnd > 8000)
+                throw new Exception("Случилась какая-то беда!");
+            Console.WriteLine($"[OrderId: {context.Message.OrderId}] Проверка на кухне займет: {rnd}");
+            await Task.Delay(rnd);
         }
     }
 }
