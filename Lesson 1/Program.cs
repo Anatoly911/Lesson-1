@@ -18,12 +18,34 @@ namespace Lesson_1
             {
                 services.AddMassTransit(x =>
                 {
-                    x.AddConsumer<RestaurantBookingRequestConsumer>()
+                    x.AddConsumer<RestaurantBookingRequestConsumer>(config =>
+                    {
+                        config.UseScheduledRedelivery(r =>
+                        {
+                            r.Intervals(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(30));
+                        });
+                        config.UseMessageRetry(r =>
+                        {
+                            r.Incremental(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2));
+                            r.Handle<ArgumentNullException>();
+                        });
+                    })
                     .Endpoint(e =>
                     {
                         e.Temporary = true;
                     });
-                    x.AddConsumer<BookingRequestFaultConsumer>()
+                    x.AddConsumer<BookingRequestFaultConsumer>(config =>
+                    {
+                        config.UseScheduledRedelivery(r =>
+                        {
+                            r.Intervals(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(30));
+                        });
+                        config.UseMessageRetry(r =>
+                        {
+                            r.Incremental(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2));
+                            r.Handle<ArgumentNullException>();
+                        });
+                    })
                     .Endpoint(e =>
                     {
                         e.Temporary = true;

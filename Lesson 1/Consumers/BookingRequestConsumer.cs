@@ -19,7 +19,7 @@ namespace Lesson_1.Consumers
         {
             Console.WriteLine($"[OrderId: {context.Message.OrderId}]");
             var result = await _restaurant.BookFreeTableAsync(1);
-            await context.Publish<ITableBooked>(new TableBooked(context.Message.OrderId, result ?? false));
+            await context.Publish<ITableBooked>(new TableBooked(context.Message.OrderId, context.Message.ClientId, result ?? false));
         }
     }
 }
