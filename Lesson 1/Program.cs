@@ -1,10 +1,11 @@
-﻿using MassTransit;
+﻿using Lesson_1.Consumers;
+using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Lesson_1
 {
-    internal static class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -17,12 +18,29 @@ namespace Lesson_1
             {
                 services.AddMassTransit(x =>
                 {
+                    x.AddConsumer<RestaurantBookingRequestConsumer>()
+                    .Endpoint(e =>
+                    {
+                        e.Temporary = true;
+                    });
+                    x.AddConsumer<BookingRequestFaultConsumer>()
+                    .Endpoint(e =>
+                    {
+                        e.Temporary = true;
+                    });
+                    x.AddSagaStateMachine<RestautantBookingSaga, RestaurantBooking>()
+                    .Endpoint(e => e.Temporary = true)
+                    .InMemoryRepository();
+                    x.AddDelayedMessageScheduler();
                     x.UsingRabbitMq((context, cfg) =>
                     {
+                        cfg.UseDelayedMessageScheduler();
+                        cfg.UseInMemoryOutbox();
                         cfg.ConfigureEndpoints(context);
                     });
                 });
-                services.AddMassTransitHostedService(true);
+                services.AddTransient<RestaurantBooking>();
+                services.AddTransient<RestautantBookingSaga>();
                 services.AddTransient<Restaurant>();
                 services.AddHostedService<Worker>();
             });

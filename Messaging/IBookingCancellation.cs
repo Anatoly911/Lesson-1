@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace Restaurant.Messages
 {
-    public class KitchenReady : IKitchenReady
+    public interface IBookingCancellation
     {
-        public KitchenReady(Guid orderId, bool ready)
+        public Guid OrderId { get; }
+    }
+    public class BookingCancellation : IBookingCancellation
+    {
+        public BookingCancellation(Guid orderId)
         {
             OrderId = orderId;
-            Ready = ready;
         }
         public Guid OrderId { get; }
-        public bool Ready { get; }
     }
 }

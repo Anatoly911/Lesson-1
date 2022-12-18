@@ -38,5 +38,9 @@ namespace Restaurant.Notification
                     break;
             }
         }
+        public void Notify(Guid orderId, Guid clientId, string message)
+        {
+            Console.WriteLine($"OrderId {orderId}: Уважаемый клиент {clientId}! {message}");
+        }
     }
 }
