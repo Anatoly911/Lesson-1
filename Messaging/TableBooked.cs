@@ -8,6 +8,11 @@ namespace Restaurant.Messages
 {
     public class TableBooked : ITableBooked
     {
+        public TableBooked(Guid orderId, bool v)
+        {
+            OrderId = orderId;
+        }
+
         public TableBooked(Guid orderId, Guid clientId, bool success, Dish? preOrder = null)
         {
             OrderId = orderId;
