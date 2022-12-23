@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Restaurant.Kitchen.Consumers
 {
-    internal class KitchenTableBookedConsumer : IConsumer<ITableBooked>
+    public class KitchenTableBookedConsumer : IConsumer<ITableBooked>
     {
         private readonly Manager _manager;
         public KitchenTableBookedConsumer(Manager manager)

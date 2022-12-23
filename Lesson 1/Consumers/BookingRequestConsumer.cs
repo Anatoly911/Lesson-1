@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Microsoft.Extensions.Logging;
 using Restaurant.Booking;
 using Restaurant.Messages;
 using Restaurant.Messages.InMemoryDb;
@@ -14,13 +15,16 @@ namespace Lesson_1.Consumers
     {
         private readonly Restaurant _restaurant;
         private readonly IInMemoryRepository<BookingRequestModel> _repository;
-        public RestaurantBookingRequestConsumer(Restaurant restaurant, IInMemoryRepository<BookingRequestModel> repository)
+        private ILogger _logger;
+        public RestaurantBookingRequestConsumer(Restaurant restaurant, IInMemoryRepository<BookingRequestModel> repository, ILogger<RestaurantBookingRequestConsumer> logger)
         {
             _restaurant = restaurant;
             _repository = repository;
+            _logger = logger;
         }
         public async Task Consume(ConsumeContext<IBookingRequest> context)
         {
+            _logger.Log(LogLevel.Information, $"[OrderId: {context.Message.OrderId}]");
             var model = _repository.Get().FirstOrDefault(i => i.OrderId == context.Message.OrderId);
             if (model is not null && model.CheckMessageId(context.MessageId.ToString()))
             {
