@@ -14,14 +14,6 @@ namespace Restaurant.Booking
             PreOrder = preOrder;
             CreationDate = creationDate;
         }
-
-       /* public BookingRequestModel(Guid orderId, Guid clientId, Dish? preOrder, string creationDate, string? v)
-        {
-            OrderId = orderId;
-            ClientId = clientId;
-            PreOrder = preOrder;
-        }*/
-
         public BookingRequestModel Update(BookingRequestModel model, string messageId)
         {
             _messageIds.Add(messageId);

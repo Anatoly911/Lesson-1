@@ -10,9 +10,9 @@ using Lesson_1.Consumers;
 
 namespace Lesson_1
 {
-    public sealed class RestautantBookingSaga : MassTransitStateMachine<RestaurantBooking>
+    public sealed class RestaurantBookingSaga : MassTransitStateMachine<RestaurantBooking>
     {
-        public RestautantBookingSaga()
+        public RestaurantBookingSaga()
         {
             InstanceState(x => x.CurrentState);
             Event(() => BookingRequested,
